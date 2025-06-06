@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router";
 import HistoryCard from "./HistoryCard"
 import ProfileCard from "../Others/ProfileCard"
-import { useContext } from "react";
+import { useContext} from "react";
 import { stateContext } from "../../Pages/ChatPage";
 
 const History=({
     setIsEnabled,
     setChatId,
-    setHistory
+    setHistory,
+    isLoading
 })=>{
     const navigate=useNavigate()
     const state=useContext(stateContext)
@@ -23,10 +24,24 @@ const History=({
                 New Chat
             </button>
             <div className="flex-1 min-h-0 max-h-[80lvh] bg-gray-100 rounded-md overflow-y-auto scrollbar-hide">
-                {state.history.length>0?
-                    state.history.map(chat=><HistoryCard title={chat.title} id={chat._id} history={history} key={chat._id} setIsEnabled={setIsEnabled} setHistory={setHistory}/>) :
+                {isLoading ? (
+                    <div className="w-20 flex justify-center items-center p-2">
+                        <img src="/historyLoader.svg" alt="Loading" />
+                    </div>
+                ) : state.history.length > 0 ? (
+                    state.history.map((chat) => (
+                        <HistoryCard
+                            title={chat.title}
+                            id={chat._id}
+                            history={state.history}
+                            key={chat._id}
+                            setIsEnabled={setIsEnabled}
+                            setHistory={setHistory}
+                        />
+                    ))
+                ) : (
                     <p className="font-bold p-5 text-xl">No recent chats</p>
-                }
+                )}
             </div>
             <ProfileCard/>
         </div>

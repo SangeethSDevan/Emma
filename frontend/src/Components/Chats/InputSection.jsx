@@ -1,20 +1,20 @@
 import { useContext } from "react";
 import api from "../../utils/api"
 import { stateContext } from "../../Pages/ChatPage";
+import { toast } from "react-toastify";
 
 const InputSection = ({
     input,
     setInput,
     setChatId,
-    setChat
+    setChat,
+    setLoading
 }) => {
     const state= useContext(stateContext);
 
     const handleSend = async (e) => {
         e.preventDefault();
         if (!input.trim()) return;
-
-        // If no chatId, create a new chat first, then send the message
         if (!state.chatId) {
             try {
                 const res = await api.post("/api/chat/newchat",{
@@ -24,20 +24,21 @@ const InputSection = ({
                 setChatId(id);
                 setChat("user", input);
                 setInput("");
-                // Now send the message to the server
                 const askRes = await api.post(`/api/ask/?id=${id}`, { message: input });
                 setChat("model", askRes.data.response);
             } catch (err) {
-                // handle error if needed
+
             }
         } else {
             setChat("user", input);
             setInput("");
+            setLoading(true)
             api.post(`/api/ask/?id=${state.chatId}`, { message: input })
                 .then((res) => res.data.response)
                 .then((data) => {
                     setChat("model", data);
-                });
+                }).catch((err)=>toast.error(err.response.data.message || "Something went wrong"))
+                .finally(()=>setLoading(false))
         }
     };
 

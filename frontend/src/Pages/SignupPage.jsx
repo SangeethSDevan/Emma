@@ -6,6 +6,7 @@ import { toast } from "react-toastify"
 const SignupPage=()=>{
 
     const navigate=useNavigate()
+    const [isLoading,setLoading]=useState(false)
     const [state,setState]=useState({
         uname:"",
         username:"",
@@ -29,6 +30,7 @@ const SignupPage=()=>{
         }))
     }
     const onFormSubmit=()=>{
+        setLoading(true)
         api.post("api/users/signup",{
             username:state.username,
             name:state.uname,
@@ -39,7 +41,7 @@ const SignupPage=()=>{
             toast.success(res.data.message)
         }).catch(err=>{
             toast.error(err.response.data.message)
-        })
+        }).finally(()=>setLoading(false))
     }
 
     const isusertaken = () => {
@@ -180,9 +182,15 @@ const SignupPage=()=>{
 
             <button 
                 className={`bg-blue-500 pl-5 pr-5 p-2 rounded-md text-white font-bold ${errorExist()?'opacity-50 cursor-not-allowed':''}`}
-                disabled={errorExist()}
+                disabled={errorExist() || isLoading}
                 onClick={onFormSubmit}
             >Submit</button>
+            {isLoading?
+                <div className="flex justify-center items-center">
+                    <img src="/loader.svg" className="w-20 h-20"/>
+                </div>:
+                null
+            }
         </form>
     )
 }

@@ -5,6 +5,7 @@ import { toast } from "react-toastify"
 
 const LoginPage=()=>{
     const navigate=useNavigate()
+    const [isLoading,setLoading]=useState(false)
     const [state,setState]=useState({
         credential:"",
         password:""
@@ -23,6 +24,7 @@ const LoginPage=()=>{
     }
 
     const onFormSubmit=()=>{
+        setLoading(true)
         api.post("/api/users/login",{
             credential:state.credential,
             password:state.password
@@ -32,6 +34,7 @@ const LoginPage=()=>{
             localStorage.setItem("user",JSON.stringify(data.user))
             localStorage.setItem("token",data.token)
             navigate("/")
+            setLoading(false)
         })
           .catch((error)=>toast.error(error.response.data.message || "Something went wrong"))
     }
@@ -69,7 +72,13 @@ const LoginPage=()=>{
             </div>
             <p>New to Emma? <Link replace={true} to={"/auth/signup"}><span className="text-blue-600 active:text-red-500 underline">Signup</span></Link></p>
             <br />
-            <button className="bg-blue-500 pl-5 pr-5 p-2 rounded-md text-white font-bold disabled:opacity-50 disabled:cursor-not-allowed" disabled={!isComplete()} onClick={onFormSubmit}>Login</button>
+            <button className="bg-blue-500 pl-5 pr-5 p-2 rounded-md text-white font-bold disabled:opacity-50 disabled:cursor-not-allowed" disabled={!isComplete()||isLoading} onClick={onFormSubmit}>Login</button>
+            {isLoading?
+                <div className="flex justify-center items-center">
+                    <img src="/loader.svg" className="w-20 h-20"/>
+                </div>:
+                null
+            }
         </form>
     )
 }

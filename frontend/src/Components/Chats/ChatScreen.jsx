@@ -4,7 +4,7 @@ import Message from "../Chats/Message"
 import { stateContext } from "../../Pages/ChatPage"
 
 
-const ChatScreen=()=>{
+const ChatScreen=({isLoading})=>{
     const now=new Date()
     const user=getUserDetails()
     const bottomRef=useRef(null)
@@ -12,10 +12,10 @@ const ChatScreen=()=>{
 
     useEffect(()=>{
         bottomRef.current?.scrollIntoView()
-    },[state.chats])
+    },[state.chats,isLoading])
 
     return(
-        <div className="flex flex-col p-2 space-y-2 max-h-[calc(100vh-120px)]">
+        <div className="flex flex-col p-2 space-y-2 max-h-[calc(100dvh-120px)]">
             {!state.chats || state.chats.length==0?
             <>
                 <p className="text-2xl sm:text-4xl font-bold text-gray-600">Good {now.getHours()<12?"Morning":"Evening"} <span className="text-black">{user.name},</span></p>
@@ -24,6 +24,12 @@ const ChatScreen=()=>{
             </>:
             <>
                 {state.chats.map((chat,id)=><Message role={chat.role} message={chat.message} key={id}/>)}
+                {isLoading?
+                          <div className="flex w-10 h-10">
+                                <img src="chatLoader.svg" alt="Loading..." />
+                        </div>:
+                        null
+                }
             </>
             
         }

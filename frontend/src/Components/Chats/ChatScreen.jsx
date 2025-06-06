@@ -25,8 +25,8 @@ const ChatScreen=({isLoading})=>{
             <>
                 {state.chats.map((chat,id)=><Message role={chat.role} message={chat.message} key={id}/>)}
                 {isLoading?
-                          <div className="flex w-10 h-10">
-                                <img src="chatLoader.svg" alt="Loading..." />
+                        <div className="flex w-10 h-10 ml-3">
+                                <img src="/chatLoader.svg" alt="Loading..." />
                         </div>:
                         null
                 }

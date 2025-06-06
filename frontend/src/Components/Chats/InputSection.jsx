@@ -18,7 +18,7 @@ const InputSection = ({
         if (!state.chatId) {
             try {
                 const res = await api.post("/api/chat/newchat",{
-                    title:input.split(" ")[0]+" Summary"
+                    title:"Chat@"+ new Date().toLocaleString()
                 });
                 const id = res.data.chatId;
                 setChatId(id);

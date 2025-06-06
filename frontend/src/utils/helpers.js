@@ -19,3 +19,17 @@ export const logout=()=>{
     localStorage.removeItem("token")
     localStorage.removeItem("user")
 }
+
+export const setHistoryLocal=(history)=>{
+    const data=localStorage.getItem("history")
+    if(data) localStorage.removeItem("history")
+
+    localStorage.setItem("history",JSON.stringify(history))
+}
+
+export const getHistoryLocal=()=>{
+    const data=localStorage.getItem("history")
+
+    if(data) return JSON.parse(data)
+    else return []
+}

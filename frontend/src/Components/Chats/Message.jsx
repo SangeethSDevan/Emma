@@ -2,7 +2,6 @@ import ReactMarkdown from "react-markdown"
 const Message=({
     role,
     message,
-    isLoading
 })=>{
     return(
         role=="user"?

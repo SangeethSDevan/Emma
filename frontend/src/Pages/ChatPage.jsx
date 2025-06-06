@@ -5,6 +5,7 @@ import ChatSection from "../Components/Chats/ChatSection"
 import { useLocation, useParams } from "react-router-dom"
 import api from "../utils/api"
 import { toast } from "react-toastify"
+import { getHistoryLocal, setHistoryLocal } from "../utils/helpers"
 
 export const stateContext=createContext()
 
@@ -21,12 +22,18 @@ const ChatPage = () => {
 
     const setHistory=()=>{
         setLoading(true)
+        setState((prev)=>({
+            ...prev,
+            history:getHistoryLocal()
+        }))
         api.get("/api/chat/getchats")
             .then((data) => data.data.chats)
-            .then((res) => setState((prev)=>({
+            .then((res) => {
+                setHistoryLocal(res)
+                setState((prev)=>({
                 ...prev,
                 history:res
-            })))
+            }))})
             .catch(error=>toast.error(error.response.data.message || "Unable to fetch chats"))
             .finally(()=>setLoading(false))
     }
@@ -56,7 +63,7 @@ const ChatPage = () => {
             isEnabled:!prev.isEnabled
         }))
     }
-    // Set chatid from URL params
+
     useEffect(() => {
         if (params.chatid) {
             setState((prev)=>({
@@ -71,7 +78,6 @@ const ChatPage = () => {
         }
     }, [params.chatid])
 
-    // Fetch chat messages when chatid changes
     useEffect(() => {
         setState((prev)=>({
             ...prev,
@@ -88,7 +94,6 @@ const ChatPage = () => {
         }
     }, [state.chatId])
 
-    // Fetch chat history on route change
     useEffect(() => {
         setHistory()
     }, [state.chatId, location.pathname])

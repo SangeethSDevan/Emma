@@ -66,7 +66,7 @@ const EditPage=()=>{
                         value={state.name} 
                         id="name" 
                         name="name" 
-                        className="border-1 rounded-sm pl-2 border-gray-400 w-sm md:w-2xl h-10"
+                        className="border-1 rounded-sm pl-2 border-gray-400 w-80 md:w-2xl h-10"
                         onChange={onHandleChange}
                     />
                 </div>
@@ -79,7 +79,7 @@ const EditPage=()=>{
                         id="email"
                         name="email" 
                         disabled={true} 
-                        className="disabled:opacity-50 cursor-not-allowed border-2 rounded-sm pl-2 border-gray-400 w-sm md:w-2xl h-10"
+                        className="disabled:opacity-50 cursor-not-allowed border-2 rounded-sm pl-2 border-gray-400 w-80 md:w-2xl h-10"
                     />
                 </div>
                 <div className="p-4 rounded-sm">
@@ -90,7 +90,7 @@ const EditPage=()=>{
                         value={state.username} 
                         id="username" 
                         name="username" 
-                        className="border-2 rounded-sm pl-2 border-gray-400 w-sm md:w-2xl h-10"
+                        className="border-2 rounded-sm pl-2 border-gray-400 w-80 md:w-2xl h-10"
                         onChange={onHandleChange}
                         onBlur={isusertaken}
                     />

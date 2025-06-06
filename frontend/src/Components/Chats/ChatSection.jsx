@@ -10,7 +10,6 @@ const ChatSection = ({setChatId,setChat}) => {
 
     return (
         <div className={`p-2 rounded-t-md flex flex-col ${state.isEnabled ? "hidden sm:flex" : "flex"} w-full h-full`}>
-            {/* Chat screen with scrollable height */}
             <div className="flex-grow overflow-y-auto">
                 <ChatScreen isLoading={isLoading}/>
             </div>

@@ -27,7 +27,7 @@ const InputSection = ({
                 const askRes = await api.post(`/api/ask/?id=${id}`, { message: input });
                 setChat("model", askRes.data.response);
             } catch (err) {
-
+                toast.error(err.response.data.message || "Something went wrong")
             }
         } else {
             setChat("user", input);

@@ -55,8 +55,8 @@ const EditPage=()=>{
     }
     return(
         <div  className="h-screen flex flex-col flex-grow font-outfit items-center">
-            <Navbar/>
-            <form className="flex flex-col justify-center h-full items-center">
+            <Navbar type={'edit'}/>
+            <form cl ssName="flex flex-col justify-center h-full items-center">
                 <p className="text-xl p-2 font-bold text-gray-500">Hello, You can edit your profile here</p>
                 <div className="p-4 rounded-sm">
                     <label htmlFor="name" className=" italic">name : </label>

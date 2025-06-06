@@ -17,7 +17,9 @@ const InputSection = ({
         // If no chatId, create a new chat first, then send the message
         if (!state.chatId) {
             try {
-                const res = await api.post("/api/chat/newchat");
+                const res = await api.post("/api/chat/newchat",{
+                    title:input.split(" ")[0]+" Summary"
+                });
                 const id = res.data.chatId;
                 setChatId(id);
                 setChat("user", input);

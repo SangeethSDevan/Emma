@@ -36,13 +36,15 @@ exports.fetchChat=async(req,res)=>{
 
 exports.createChat=async(req,res)=>{
     const id=req.body?.user?.uid
+    const title=req.body?.title
     if(!id) return res.status(403).json({
         status:"fail",
         message:"UserID is required field"
     })
     try{
         const data=await chat.create({
-            userId:id
+            userId:id,
+            title
         })
 
         await user.findByIdAndUpdate(id,

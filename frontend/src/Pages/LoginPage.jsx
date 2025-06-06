@@ -1,0 +1,77 @@
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import api from "../utils/api"
+import { toast } from "react-toastify"
+
+const LoginPage=()=>{
+    const navigate=useNavigate()
+    const [state,setState]=useState({
+        credential:"",
+        password:""
+    })
+    
+    const onHandleChange=(e)=>{
+        const {name,value}=e.target
+        setState((prev)=>({
+            ...prev,
+            [name]:value
+        }))
+    }
+
+    const isComplete=()=>{
+        return !!(state.credential && state.password)
+    }
+
+    const onFormSubmit=()=>{
+        api.post("/api/users/login",{
+            credential:state.credential,
+            password:state.password
+        }).then((res)=>res.data)
+          .then((data)=>{
+            toast.success(`Welcome ${data.user.name}`)
+            localStorage.setItem("user",JSON.stringify(data.user))
+            localStorage.setItem("token",data.token)
+            navigate("/")
+        })
+          .catch((error)=>toast.error(error.response.data.message || "Something went wrong"))
+    }
+    
+    return (
+        <form className="flex flex-col p-5 rounded-md pl-10 pr-10" onSubmit={(e)=>{
+            e.preventDefault()
+        }}>
+            <h1 className="font-bold text-3xl">Hello,</h1>
+            <h1 className="font-bold text-3xl">Nice to Meet <span className="text-blue-600">you again.</span></h1>
+            <br />
+            <div className="flex flex-col">
+                <label htmlFor="credential">Username or Email</label>
+                <input 
+                    type="text" 
+                    name="credential" 
+                    id="credential" 
+                    placeholder="Enter your username" 
+                    className="pl-3 pr-3 p-1 border-3 rounded-md border-gray-300 focus:border-blue-600 outline-0"
+                    onChange={onHandleChange}
+                    value={state.credential}
+                />   
+            </div>
+            <div className="flex flex-col">
+                <label htmlFor="password">Password</label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    placeholder="Enter your password" 
+                    className="pl-3 pr-3 p-1 border-3 rounded-md border-gray-300 focus:border-blue-600 outline-0"
+                    onChange={onHandleChange}
+                    value={state.password}
+                />
+            </div>
+            <p>New to Emma? <Link replace={true} to={"/auth/signup"}><span className="text-blue-600 active:text-red-500 underline">Signup</span></Link></p>
+            <br />
+            <button className="bg-blue-500 pl-5 pr-5 p-2 rounded-md text-white font-bold disabled:opacity-50 disabled:cursor-not-allowed" disabled={!isComplete()} onClick={onFormSubmit}>Login</button>
+        </form>
+    )
+}
+
+export default LoginPage

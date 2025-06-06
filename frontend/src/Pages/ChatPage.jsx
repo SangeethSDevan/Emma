@@ -92,7 +92,7 @@ const ChatPage = () => {
 
     return (
         <stateContext.Provider value={state}>
-        <div className="h-screen flex flex-col flex-grow font-outfit" >
+        <div className="h-[100dvh] flex flex-col flex-grow font-outfit" >
             <Navbar
                 handleChange={setisEnabled}
                 type={"chatScreen"}

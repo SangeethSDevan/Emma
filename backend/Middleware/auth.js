@@ -1,7 +1,8 @@
 const jwt=require("jsonwebtoken")
 
 exports.validateUser=(req,res,next)=>{
-    const token=req.headers.authorization?.split(" ")[1]
+     console.log(req.cookies)
+    const token=req.cookies?.token
    if(!token){
         return res.status(401).json({
             status:"fail",
@@ -16,9 +17,21 @@ exports.validateUser=(req,res,next)=>{
         }
         next()
    }catch(err){
-        res.status(417).json({
+          res.clearCookie("token",{
+            path:"/",
+            httpOnly:true,
+            sameSite:"None",
+            secure:true
+          })
+          return res.status(417).json({
             staus:"fail",
             message:err.message
         })
    }
+}
+
+exports.checkAuthenticity=(req,res)=>{
+     res.status(200).json({
+          status:"sucess",
+     })
 }

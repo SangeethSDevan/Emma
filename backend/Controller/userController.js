@@ -36,6 +36,13 @@ exports.loginController= async (req,res)=>{
             email:userData.email
         },process.env.JWT_SECRET);
 
+        res.cookie("token",token,{
+            path:"/",
+            httpOnly:true,
+            sameSite:"None",
+            secure:true
+        })
+
         const log= await chat.find({userId: userData._id}).select('_id title').lean()
 
         return res.status(200).json({
@@ -104,6 +111,11 @@ exports.signupContoller=async(req,res)=>{
             email:user.email
         },process.env.JWT_SECRET)
 
+        res.cookie("token",token,{
+            path:"/",
+            httpOnly:true,
+            sameSite:"None"
+        })
         const log= await chat.find({userId: user._id}).select('_id title').lean()
 
 
@@ -113,7 +125,7 @@ exports.signupContoller=async(req,res)=>{
             user:{
                 username:user.username,
                 name:user.name,
-                email:user.email
+                email:user.email,
             },
             token:token,
             log:log
@@ -195,4 +207,16 @@ exports.isUsernameTaken=async(req,res)=>{
             message:err.message
         })
     }
+}
+exports.logoutController=(req,res)=>{
+    res.clearCookie("token",{
+        path:"/",
+        httpOnly:true,
+        sameSite:"None",
+        secure:true
+    })
+    res.status(200).json({
+        status:"success",
+        message:"Logged out!"
+    })
 }

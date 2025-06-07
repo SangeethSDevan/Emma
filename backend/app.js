@@ -2,8 +2,9 @@ const express=require('express')
 const userRouter=require("./Routes/userRouter");
 const chatRouter=require("./Routes/chatRouter");
 const askRouter=require("./Routes/askRouter")
+const cookieParser=require("cookie-parser")
 const cors=require('cors')
-const { validateUser } = require('./Middleware/auth');
+const { validateUser, checkAuthenticity } = require('./Middleware/auth');
 
 const app=express();
 
@@ -13,6 +14,7 @@ app.use(cors({
     credentials:true
 }))
 
+app.use(cookieParser())
 app.use(express.json())
 
 app.use("/api/users",userRouter)
@@ -25,5 +27,8 @@ app.use("/api/isalive",(req,res)=>{
         message:"I am alive"
     })
 })
+
+app.get("/api/validate",validateUser,checkAuthenticity)
+
 
 module.exports=app

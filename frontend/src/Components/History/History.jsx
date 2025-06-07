@@ -9,7 +9,6 @@ const History=({
     setChatId,
     setHistory,
     isHistoryAvailable,
-    setHistoryStatus
 })=>{
     const navigate=useNavigate()
     const state=useContext(stateContext)

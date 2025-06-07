@@ -15,7 +15,7 @@ const Protected=({children})=>{
                 .catch((error)=>{
                     toast.error(error.response.data.message)
                     setAuthorized(false)
-                    navigate("/auth/login")
+                    navigate("/auth/signup")
                 })
         }
         checkAuth()

@@ -1,8 +1,6 @@
 # Emma Backend API
 
-A simple Node.js backend for Emma, an AI nurse mentor, using Express and MongoDB.
-
----
+A simple Node.js backend for Emma
 
 ## Getting Started
 
@@ -15,6 +13,7 @@ A simple Node.js backend for Emma, an AI nurse mentor, using Express and MongoDB
    PORT=8000
    MONGO_URL=your_mongodb_url
    JWT_SECRET=your_jwt_secret
+   CLIENT_URL=http://localhost:5173
    ```
 3. Start the server:
    ```
@@ -40,6 +39,8 @@ A simple Node.js backend for Emma, an AI nurse mentor, using Express and MongoDB
 
 ### User Routes
 
+#### Signup
+
 - **POST `/api/users/signup`**
   - **Body:**
     ```json
@@ -54,15 +55,25 @@ A simple Node.js backend for Emma, an AI nurse mentor, using Express and MongoDB
     ```json
     {
       "status": "sucess",
-      "message": "Profile created successfully"
+      "message": "Welcome <name>",
+      "user": {
+        "username": "string",
+        "name": "string",
+        "email": "string"
+      },
+      "log": [
+        { "_id": "chatId", "title": "Chat Title" }
+      ]
     }
     ```
+
+#### Login
 
 - **POST `/api/users/login`**
   - **Body:**
     ```json
     {
-      "cerdinal": "username or email",
+      "credential": "username or email",
       "password": "string"
     }
     ```
@@ -70,8 +81,169 @@ A simple Node.js backend for Emma, an AI nurse mentor, using Express and MongoDB
     ```json
     {
       "status": "sucess",
-      "token": "jwt_token",
+      "user": {
+        "username": "string",
+        "name": "string",
+        "email": "string"
+      },
       "log": [
+        { "_id": "chatId", "title": "Chat Title" }
+      ]
+    }
+    ```
+  - **Sets Cookie:** `token` (HttpOnly, SameSite=None, Secure, 7 days)
+
+#### Logout
+
+- **POST `/api/users/logout`**
+  - **Clears Cookie:** `token`
+  - **Success Response:**
+    ```json
+    {
+      "status": "success",
+      "message": "Logged out!"
+    }
+    ```
+
+#### Edit Profile
+
+- **PUT `/api/users/edit`** (Protected)
+  - **Body:**
+    ```json
+    {
+      "update": {
+        "username": "string",
+        "name": "string"
+      }
+    }
+    ```
+  - **Success Response:**
+    ```json
+    {
+      "status": "success",
+      "data": {
+        "username": "string",
+        "name": "string",
+        "email": "string"
+      }
+    }
+    ```
+
+#### Username Availability
+
+- **GET `/api/users/isusertaken?username=<username>`**
+  - **Success Response (available):**
+    ```json
+    {
+      "status": "success",
+      "message": "<username> is available",
+      "isTaken": false
+    }
+    ```
+  - **If taken:**
+    ```json
+    {
+      "status": "fail",
+      "message": "username already taken",
+      "isTaken": true
+    }
+    ```
+
+---
+
+### Auth/Validation
+
+- **GET `/api/validate`** (Protected)
+  - **Checks if the user is authenticated via cookie.**
+  - **Success Response:**
+    ```json
+    {
+      "status": "sucess"
+    }
+    ```
+  - **Fail Response:**
+    ```json
+    {
+      "status": "fail",
+      "message": "Unauthorized access"
+    }
+    ```
+
+---
+
+### Chat Routes (Protected)
+
+> All chat routes require authentication via the `token` cookie.
+
+#### Fetch Chat
+
+- **POST `/api/chat/fetch`**
+  - **Body:**
+    ```json
+    { "id": "chatId" }
+    ```
+  - **Response:**
+    ```json
+    {
+      "status": "success",
+      "data": {
+        "_id": "chatId",
+        "userId": "userId",
+        "title": "Chat Title",
+        "history": [
+          { "role": "user", "message": "..." },
+          { "role": "model", "message": "..." }
+        ]
+      }
+    }
+    ```
+
+#### Create Chat
+
+- **POST `/api/chat/newchat`**
+  - **Body:**
+    ```json
+    { "title": "string" }
+    ```
+  - **Response:**
+    ```json
+    {
+      "status": "success",
+      "chatId": "chatId"
+    }
+    ```
+
+#### Delete Chat
+
+- **DELETE `/api/chat/deletechat?id=<chatId>`**
+  - **Response:**
+    ```json
+    {
+      "status": "success",
+      "message": "Chat deleted!"
+    }
+    ```
+
+#### Rename Chat
+
+- **PUT `/api/chat/renamechat/:name?id=<chatId>`**
+  - **Response:**
+    ```json
+    {
+      "status": "success",
+      "message": "Chat renamed!"
+    }
+    ```
+
+#### Get All Chats
+
+- **GET `/api/chat/getchats`**
+  - **Response:**
+    ```json
+    {
+      "status": "success",
+      "length": 2,
+      "chats": [
         { "_id": "chatId", "title": "Chat Title" }
       ]
     }
@@ -79,49 +251,28 @@ A simple Node.js backend for Emma, an AI nurse mentor, using Express and MongoDB
 
 ---
 
-### Chat Routes (Require Auth)
+### Ask Route (Protected)
 
-Add header: `Authorization: Bearer <token>`
-
-- **POST `/api/chat/fetch`**
-  - **Body:** `{ "chatId": "string" }`
-  - **Response:** Chat data
-
-- **POST `/api/chat/newchat`**
-  - **Body:** `{ "title": "string" }`
-  - **Response:** New chat info
-
-- **DELETE `/api/chat/deletechat`**
-  - **Body:** `{ "chatId": "string" }`
-  - **Response:** Delete status
-
-- **PUT `/api/chat/renamechat/:name`**
-  - **Body:** `{ "chatId": "string" }`
-  - **Response:** Rename status
-
-- **GET `/api/chat/getchats`**
-  - **Response:** List of user's chats
-
----
-
-### Ask Route (Require Auth)
-
-- **POST `/api/ask`**
+- **POST `/api/ask/?id=<chatId>`**
   - **Body:**
     ```json
+    { "message": "Your question here" }
+    ```
+  - **Response:**
+    ```json
     {
-      "chatId": "string",
-      "question": "string"
+      "status": "success",
+      "response": "AI answer here"
     }
     ```
-  - **Response:** AI answer and chat update
 
 ---
 
 ## Notes
 
 - All requests and responses use JSON.
-- Protected routes require a valid JWT token.
+- Protected routes require a valid JWT token in the `token` cookie.
 - Make sure MongoDB is running and `.env` is set up.
+- For production, set cookies with `secure: true` and `sameSite: "none"`.
 
 ---

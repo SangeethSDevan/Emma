@@ -119,7 +119,8 @@ exports.signupContoller=async(req,res)=>{
             path:"/",
             httpOnly:true,
             sameSite:"none",
-            maxAge: 7 * 24 * 60 * 60 * 1000,
+            secure:true,
+            maxAge: 7 * 24 * 60 * 60 * 1000
         })
         const log= await chat.find({userId: user._id}).select('_id title').lean()
 

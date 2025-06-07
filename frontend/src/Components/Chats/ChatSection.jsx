@@ -10,7 +10,7 @@ const ChatSection = ({setChatId,setChat}) => {
 
     return (
         <div className={`p-2 rounded-t-md flex flex-col ${state.isEnabled ? "hidden sm:flex" : "flex"} w-full h-full`}>
-            <div className="flex-grow overflow-y-auto">
+            <div className="flex flex-grow overflow-y-auto justify-start items-end">
                 <ChatScreen isLoading={isLoading}/>
             </div>
             <InputSection input={input} setInput={setInput} setChat={setChat} setChatId={setChatId} setLoading={setLoading}/>

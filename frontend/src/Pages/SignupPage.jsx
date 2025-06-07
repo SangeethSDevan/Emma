@@ -87,7 +87,7 @@ const SignupPage=()=>{
                     type="text" 
                     name="uname" 
                     id="uname" 
-                    placeholder="name" 
+                    placeholder="John Doe" 
                     className="pl-3 pr-3 p-1 border-3 rounded-md border-gray-300 focus:border-blue-600 outline-0"
                     onChange={onHandleChange}
                     value={state.uname}
@@ -116,7 +116,7 @@ const SignupPage=()=>{
                     type="text" 
                     name="username" 
                     id="username" 
-                    placeholder="username" 
+                    placeholder="johnn.doe_" 
                     className="pl-3 pr-3 p-1 border-3 rounded-md border-gray-300 focus:border-blue-600 outline-0"
                     onChange={onHandleChange}
                     value={state.username}
@@ -131,7 +131,7 @@ const SignupPage=()=>{
                     type="email" 
                     name="email" 
                     id="email" 
-                    placeholder="email" 
+                    placeholder="john@random.com" 
                     className="pl-3 pr-3 p-1 border-3 rounded-md border-gray-300 focus:border-blue-600 outline-0"
                     onChange={onHandleChange}
                     value={state.email}
@@ -159,7 +159,7 @@ const SignupPage=()=>{
                     type="password" 
                     name="password" 
                     id="password" 
-                    placeholder="password" 
+                    placeholder="********" 
                     className="pl-3 pr-3 p-1 border-3 rounded-lg border-gray-300 focus:border-blue-600 outline-0"
                     onChange={onHandleChange}
                     value={state.password}

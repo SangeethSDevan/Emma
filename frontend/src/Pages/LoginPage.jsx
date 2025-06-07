@@ -53,7 +53,7 @@ const LoginPage=()=>{
                     type="text" 
                     name="credential" 
                     id="credential" 
-                    placeholder="Enter your username" 
+                    placeholder="user.name_" 
                     className="pl-3 pr-3 p-1 border-3 rounded-md border-gray-300 focus:border-blue-600 outline-0"
                     onChange={onHandleChange}
                     value={state.credential}
@@ -65,7 +65,7 @@ const LoginPage=()=>{
                     type="password" 
                     name="password" 
                     id="password" 
-                    placeholder="Enter your password" 
+                    placeholder="********" 
                     className="pl-3 pr-3 p-1 border-3 rounded-md border-gray-300 focus:border-blue-600 outline-0"
                     onChange={onHandleChange}
                     value={state.password}

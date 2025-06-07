@@ -15,7 +15,8 @@ exports.loginController= async (req,res)=>{
     }
 
     let userData;
-    if(credential.includes("@")){
+    const regex=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if(credential.match(regex)){
         userData=await users.findOne({ email:credential })
     }else{
         userData=await users.findOne({ username:credential })

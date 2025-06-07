@@ -32,7 +32,6 @@ const LoginPage=()=>{
           .then((data)=>{
             toast.success(`Welcome ${data.user.name}`)
             localStorage.setItem("user",JSON.stringify(data.user))
-            localStorage.setItem("token",data.token)
             navigate("/")
         })
           .catch((error)=>{

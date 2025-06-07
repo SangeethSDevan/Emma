@@ -32,13 +32,12 @@ const SignupPage=()=>{
     }
     const onFormSubmit=()=>{
         setLoading(true)
-        api.post("api/users/signup",{
+        api.post("/api/users/signup",{
             username:state.username,
             name:state.uname,
-            email:state.email,
+            email:state.email.toLowerCase(),
             password:state.password
         },{withCredentials:true}).then((res)=>{
-            localStorage.setItem("token",res.data.token)
             setUserDetails("user",res.data.user)
             setHistoryLocal(res.data.log)
             navigate("/")

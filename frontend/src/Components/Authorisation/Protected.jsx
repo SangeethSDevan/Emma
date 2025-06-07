@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import api from "../../utils/api"
-import { logout } from "../../utils/helpers"
+import { toast } from "react-toastify"
 
 const Protected=({children})=>{
     const [isAuthorized,setAuthorized]=useState(null)
@@ -12,9 +12,8 @@ const Protected=({children})=>{
             api.get("/api/validate")
                 .then(()=>setAuthorized(true))
                 .catch((error)=>{
-                    console.log(error)
+                    toast.error(error.response.data.message)
                     setAuthorized(false)
-                    logout()
                     navigate("/auth/login")
                 })
         }

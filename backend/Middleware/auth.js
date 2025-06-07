@@ -20,7 +20,7 @@ exports.validateUser=(req,res,next)=>{
           res.clearCookie("token",{
             path:"/",
             httpOnly:true,
-            sameSite:"None",
+            sameSite:"none",
             secure:true
           })
           return res.status(417).json({

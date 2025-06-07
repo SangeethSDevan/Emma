@@ -18,6 +18,7 @@ export const setUserDetails=(key,details)=>{
 export const logout=()=>{
     localStorage.removeItem("token")
     localStorage.removeItem("user")
+    localStorage.removeItem("history")
 }
 
 export const setHistoryLocal=(history)=>{

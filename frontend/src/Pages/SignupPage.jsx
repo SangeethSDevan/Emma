@@ -2,6 +2,7 @@ import { useState } from "react"
 import {Link, useNavigate} from "react-router-dom"
 import api from "../utils/api"
 import { toast } from "react-toastify"
+import { setHistoryLocal, setUserDetails } from "../utils/helpers"
 
 const SignupPage=()=>{
 
@@ -37,7 +38,10 @@ const SignupPage=()=>{
             email:state.email,
             password:state.password
         },{withCredentials:true}).then((res)=>{
-            navigate("/auth/login")
+            localStorage.setItem("token",res.data.token)
+            setUserDetails("user",res.data.user)
+            setHistoryLocal(res.data.log)
+            navigate("/")
             toast.success(res.data.message)
         }).catch(err=>{
             toast.error(err.response.data.message)

@@ -70,7 +70,7 @@ exports.signupContoller=async(req,res)=>{
             message:"Name can't exceed 20 characters"
         })
     }
-    if(password.length<8 && password.length>16) return res.status(403).json({
+    if(password.length<8 || password.length>16) return res.status(403).json({
         status:"fail",
         message:"Password must contain min 8 and max 16 characters"
     })
@@ -90,16 +90,32 @@ exports.signupContoller=async(req,res)=>{
     const hash=await bcrypt.hash(password,10)
 
     try{
-        await users.create({
+        const user=await users.create({
             username:username,
             name: name,
             email:email,
             password:hash
         })
 
+        const token=jwt.sign({
+            uid:user._id,
+            username:user.username,
+            email:user.email
+        },process.env.JWT_SECRET)
+
+        const log= await chat.find({userId: user._id}).select('_id title').lean()
+
+
         return res.status(200).json({
             status:"sucess",
-            message:"Profile created successfully"
+            message:`Welcome ${user.name}`,
+            user:{
+                username:user.username,
+                name:user.name,
+                email:user.email
+            },
+            token:token,
+            log:log
         })
     }catch(err){
         return res.status(400).json({

@@ -15,19 +15,28 @@ const EditPage=()=>{
     const [isUserTaken,setUserTaken]=useState(false)
     const onHandleSubmit=(e)=>{
         e.preventDefault()
-        api.put("/api/users/edit",{
-            update:state
-        }).then((res)=>res.data.data)
-          .then((data)=>{
-            setUserDetails("user",{
-                email:data.email,
-                username:data.username,
-                name:data.name
-            })
-            toast.success("Profile update successfully!")
+        toast.promise(
+            api.put("/api/users/edit",{
+                update:state
+            }).then((res)=>res.data.data)
+            .then((data)=>{
+                setUserDetails("user",{
+                    email:data.email,
+                    username:data.username,
+                    name:data.name
+                })
             navigate("/",{replace:true})
-          })
-          .catch((error)=>toast.error(error.response.data.message || "Something went wrong"))
+          }),{
+            pending:"Updating profile",
+            success:"Profile update successfully",
+            error:{
+                render({data}){
+                    const message=data?.response?.data?.message || "Something went wrong"
+                    return message
+                }
+            }
+          }
+        )
     }
     const onHandleChange=(e)=>{
         const {name,value}=e.target
@@ -56,7 +65,7 @@ const EditPage=()=>{
     return(
         <div  className="h-screen flex flex-col flex-grow font-outfit items-center">
             <Navbar type={'edit'}/>
-            <form cl ssName="flex flex-col justify-center h-full items-center">
+            <form className="flex flex-col justify-center h-full items-center">
                 <p className="text-xl p-2 font-bold text-gray-500">Hello, You can edit your profile here</p>
                 <div className="p-4 rounded-sm">
                     <label htmlFor="name" className=" italic">name : </label>

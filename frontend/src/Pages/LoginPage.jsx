@@ -34,9 +34,10 @@ const LoginPage=()=>{
             localStorage.setItem("user",JSON.stringify(data.user))
             localStorage.setItem("token",data.token)
             navigate("/")
-            setLoading(false)
         })
-          .catch((error)=>toast.error(error.response.data.message || "Something went wrong"))
+          .catch((error)=>{
+            toast.error(error.response.data.message || "Something went wrong")
+        }).finally(()=>setLoading(false))
     }
     
     return (

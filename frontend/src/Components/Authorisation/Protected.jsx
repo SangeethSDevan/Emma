@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import api from "../../utils/api"
 import { toast } from "react-toastify"
+import LoadingPage from "../../Pages/LoadingPage"
 
 const Protected=({children})=>{
     const [isAuthorized,setAuthorized]=useState(null)
@@ -20,7 +21,7 @@ const Protected=({children})=>{
         checkAuth()
     },[navigate])
 
-    if(isAuthorized==null) return <div>Loading...</div>
+    if(isAuthorized==null) return <LoadingPage/>
 
     return isAuthorized?children:null
 }

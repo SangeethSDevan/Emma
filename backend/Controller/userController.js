@@ -17,7 +17,7 @@ exports.loginController= async (req,res)=>{
     let userData;
     const regex=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if(credential.match(regex)){
-        userData=await users.findOne({ email:credential })
+        userData=await users.findOne({ email:credential.toLowerCase() })
     }else{
         userData=await users.findOne({ username:credential })
     }
@@ -34,7 +34,17 @@ exports.loginController= async (req,res)=>{
             uid:userData._id,
             username:userData.username,
             email:userData.email
-        },process.env.JWT_SECRET);
+        },process.env.JWT_SECRET,
+        {expiresIn:'7d'}
+        );
+
+        res.cookie("token",token,{
+            path:"/",
+            httpOnly:true,
+            sameSite:"none",
+            secure:true,
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        })
 
         const log= await chat.find({userId: userData._id}).select('_id title').lean()
 
@@ -45,7 +55,6 @@ exports.loginController= async (req,res)=>{
                 name:userData.name,
                 email:userData.email
             },
-            token:token,
             log:log
         })
     }
@@ -102,8 +111,16 @@ exports.signupContoller=async(req,res)=>{
             uid:user._id,
             username:user.username,
             email:user.email
-        },process.env.JWT_SECRET)
+        },process.env.JWT_SECRET,
+        {expiresIn:'7d'}
+        )
 
+        res.cookie("token",token,{
+            path:"/",
+            httpOnly:true,
+            sameSite:"none",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        })
         const log= await chat.find({userId: user._id}).select('_id title').lean()
 
 
@@ -113,9 +130,8 @@ exports.signupContoller=async(req,res)=>{
             user:{
                 username:user.username,
                 name:user.name,
-                email:user.email
+                email:user.email,
             },
-            token:token,
             log:log
         })
     }catch(err){
@@ -195,4 +211,16 @@ exports.isUsernameTaken=async(req,res)=>{
             message:err.message
         })
     }
+}
+exports.logoutController=(req,res)=>{
+    res.clearCookie("token",{
+        path:"/",
+        httpOnly:true,
+        sameSite:"none",
+        secure:true
+    })
+    res.status(200).json({
+        status:"success",
+        message:"Logged out!"
+    })
 }

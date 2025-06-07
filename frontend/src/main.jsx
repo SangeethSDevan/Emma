@@ -1,4 +1,3 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import {createBrowserRouter, RouterProvider}from 'react-router-dom'
 import './index.css'
@@ -54,6 +53,13 @@ const router=createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <>
     <RouterProvider router={router}/>
-    <ToastContainer position='top-right' autoClose={1000} theme='light' hideProgressBar={true} closeOnClick={0}/>
+    <ToastContainer 
+      position='top-right' 
+      autoClose={1000} 
+      theme='light' 
+      hideProgressBar={true} 
+      closeOnClick={true}
+      closeButton={false}
+    />
   </>
 )

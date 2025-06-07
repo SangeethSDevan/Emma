@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
+import api from "../../utils/api"
+import { toast } from "react-toastify"
 
 const Protected=({children})=>{
     const [isAuthorized,setAuthorized]=useState(null)
@@ -7,19 +9,15 @@ const Protected=({children})=>{
     
     useEffect(()=>{
         const checkAuth=()=>{
-            const token=localStorage.getItem("token")
-
-            if(!token) {
-                setAuthorized(false)
-                navigate("/auth/login")
-            }
-            else setAuthorized(true)
+            api.get("/api/validate")
+                .then(()=>setAuthorized(true))
+                .catch((error)=>{
+                    toast.error(error.response.data.message)
+                    setAuthorized(false)
+                    navigate("/auth/login")
+                })
         }
-
         checkAuth()
-        const interval=setInterval(checkAuth,2000)
-
-        return ()=> clearInterval(interval)
     },[navigate])
 
     if(isAuthorized==null) return <div>Loading...</div>

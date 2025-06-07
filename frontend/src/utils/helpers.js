@@ -1,3 +1,6 @@
+import { toast } from "react-toastify"
+import api from "./api"
+
 export const getUserDetails=()=>{
     const users=localStorage.getItem("user")
 
@@ -16,9 +19,16 @@ export const setUserDetails=(key,details)=>{
 }
 
 export const logout=()=>{
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    localStorage.removeItem("history")
+    api.post("/api/users/logout")
+        .then((res)=>res.data.message)
+        .then((data)=>{
+            toast.success(data)
+            localStorage.removeItem("token")
+            localStorage.removeItem("user")
+            localStorage.removeItem("history")
+        })
+        .catch((error)=>toast.error(error.response.message || "Something went wrong!"))
+
 }
 
 export const setHistoryLocal=(history)=>{

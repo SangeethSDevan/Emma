@@ -8,7 +8,8 @@ const History=({
     setIsEnabled,
     setChatId,
     setHistory,
-    isLoading
+    isHistoryAvailable,
+    setHistoryStatus
 })=>{
     const navigate=useNavigate()
     const state=useContext(stateContext)
@@ -24,7 +25,7 @@ const History=({
                 New Chat
             </button>
             <div className="flex-1 min-h-0 max-h-[70dvh] bg-gray-100 rounded-md overflow-y-auto scrollbar-hide">
-                {isLoading ? (
+                { !isHistoryAvailable? (
                     <div className="w-20 flex justify-center items-center p-2">
                         <img src="/historyLoader.svg" alt="Loading" />
                     </div>

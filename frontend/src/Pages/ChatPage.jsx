@@ -12,7 +12,7 @@ export const stateContext=createContext()
 const ChatPage = () => {
     const params = useParams()
     const location=useLocation()
-    const [isLoading,setLoading]=useState(false)
+    const [isHistoryAvailable,setHistoryStatus]=useState(false)
     const [state,setState]=useState({
         chatId:"",
         chats:[],
@@ -21,21 +21,25 @@ const ChatPage = () => {
     })
 
     const setHistory=()=>{
-        setLoading(true)
+        const localHistory=getHistoryLocal()
         setState((prev)=>({
             ...prev,
-            history:getHistoryLocal()
+            history:localHistory
         }))
+        setHistoryStatus(Array.isArray(localHistory) && localHistory.length >0)
         api.get("/api/chat/getchats")
             .then((data) => data.data.chats)
             .then((res) => {
                 setHistoryLocal(res)
+                setHistoryStatus(true)
                 setState((prev)=>({
                 ...prev,
                 history:res
             }))})
-            .catch(error=>toast.error(error.response.data.message || "Unable to fetch chats"))
-            .finally(()=>setLoading(false))
+            .catch(error=>{
+                toast.error(error.response.data.message || "Unable to fetch chats")
+                setHistoryStatus(false)
+            })
     }
 
     const setChatId=(id)=>{
@@ -106,7 +110,7 @@ const ChatPage = () => {
                 type={"chatScreen"}
             />
             <div className="flex flex-grow">
-                <History setIsEnabled={setisEnabled} setChatId={setChatId} setHistory={setHistory} isLoading={isLoading}/>
+                <History setIsEnabled={setisEnabled} setChatId={setChatId} setHistory={setHistory} isHistoryAvailable={isHistoryAvailable} setHistoryStatus={setHistoryStatus}/>
                 <ChatSection setChatId={setChatId} setChat={setChat}/>
             </div>
         </div>

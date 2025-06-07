@@ -15,6 +15,7 @@ const ChatPage = () => {
     const [isHistoryAvailable,setHistoryStatus]=useState(false)
     const [state,setState]=useState({
         chatId:"",
+        chatTitle:"",
         chats:[],
         history:[],
         isEnabled:false
@@ -68,16 +69,25 @@ const ChatPage = () => {
         }))
     }
 
+    const setChatTitle=(title)=>{
+        setState((prev)=>({
+            ...prev,
+            chatTitle:title
+        }))
+    }
+
     useEffect(() => {
         if (params.chatid) {
             setState((prev)=>({
                 ...prev,
-                chatId:params.chatid
+                chatId:params.chatid,
+                chatTitle:""
             }))
         } else {
             setState((prev)=>({
                 ...prev,
-                chatId:params.chatid
+                chatId:params.chatid,
+                chatTitle:""
             }))
         }
     }, [params.chatid])
@@ -85,14 +95,16 @@ const ChatPage = () => {
     useEffect(() => {
         setState((prev)=>({
             ...prev,
-            chats:[]
+            chats:[],
+            chatTitle:""
         }))
         if (state.chatId) {
             api.post("/api/chat/fetch", { id: state.chatId })
-                .then((res) =>res.data.data.history)
+                .then((res) =>res.data.data)
                 .then((data)=>setState((prev)=>({
                     ...prev,
-                    chats:data
+                    chats:data?.history,
+                    chatTitle:data?.title
                 })))
                 .catch((error)=>toast.error(error.response.data.message || "Something went wrong"))
         }
@@ -111,7 +123,7 @@ const ChatPage = () => {
             />
             <div className="flex flex-grow">
                 <History setIsEnabled={setisEnabled} setChatId={setChatId} setHistory={setHistory} isHistoryAvailable={isHistoryAvailable} setHistoryStatus={setHistoryStatus}/>
-                <ChatSection setChatId={setChatId} setChat={setChat}/>
+                <ChatSection setChatId={setChatId} setChat={setChat} setChatTitle={setChatTitle} setHistory={setHistory}/>
             </div>
         </div>
         </stateContext.Provider>

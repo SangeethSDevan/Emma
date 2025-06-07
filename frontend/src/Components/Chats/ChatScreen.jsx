@@ -15,7 +15,7 @@ const ChatScreen=({isLoading})=>{
     },[state.chats,isLoading])
 
     return(
-        <div className="flex flex-col p-2 space-y-2 max-h-[calc(100dvh-120px)] w-full">
+        <div className="flex flex-col p-2 space-y-2 max-h-[calc(90dvh-120px)] w-full">
             {!state.chats || state.chats.length==0?
             <>
                 <p className="text-2xl sm:text-4xl font-bold text-gray-600">Good {now.getHours()<12?"Morning":"Evening"} <span className="text-black">{user.name},</span></p>

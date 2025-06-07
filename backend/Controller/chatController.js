@@ -21,7 +21,6 @@ exports.fetchChat=async(req,res)=>{
         //     status:"fail",
         //     message:"ACCESS DENIED: You are acessing a chat that doesn't belong to you"
         // })
-
         res.status(200).json({
             status:"success",
             data:history

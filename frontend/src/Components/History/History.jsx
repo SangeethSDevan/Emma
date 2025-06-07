@@ -29,7 +29,7 @@ const History=({
                         <img src="/historyLoader.svg" alt="Loading" />
                     </div>
                 ) : state.history.length > 0 ? (
-                    state.history.map((chat) => (
+                    state.history.slice().reverse().map((chat) => (
                         <HistoryCard
                             title={chat.title}
                             id={chat._id}

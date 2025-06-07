@@ -23,7 +23,6 @@ export const logout=()=>{
         .then((res)=>res.data.message)
         .then((data)=>{
             toast.success(data)
-            localStorage.removeItem("token")
             localStorage.removeItem("user")
             localStorage.removeItem("history")
         })

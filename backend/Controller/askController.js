@@ -29,6 +29,7 @@ exports.askEmma = async (req, res) => {
         }
         if (!message) return res.status(404).json({ status: "fail", message: "Message can't be empty" });
 
+
         const history = await chat.findByIdAndUpdate(id, {
             $push: {
                 history: {

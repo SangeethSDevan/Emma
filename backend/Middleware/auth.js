@@ -1,6 +1,7 @@
 const jwt=require("jsonwebtoken")
+const users=require("../Model/userModel")
 
-exports.validateUser=(req,res,next)=>{
+exports.validateUser=async(req,res,next)=>{
     const token=req.cookies?.token
    if(!token){
         return res.status(401).json({
@@ -14,6 +15,10 @@ exports.validateUser=(req,res,next)=>{
           ...req.body,
           user:jwt.verify(token,process.env.JWT_SECRET)
         }
+        const id=req.body.user?.uid
+        const user=await users.findOne({_id:id})
+        
+        if(!user) throw Error("User doesn't exist!")
         next()
    }catch(err){
           res.clearCookie("token",{
@@ -22,7 +27,7 @@ exports.validateUser=(req,res,next)=>{
             sameSite:"none",
             secure:true
           })
-          return res.status(417).json({
+          return res.status(403).json({
             staus:"fail",
             message:err.message
         })

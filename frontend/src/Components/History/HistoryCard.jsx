@@ -10,12 +10,12 @@ const HistoryCard=({
 })=>{
     const navigate=useNavigate()
     return(
-        <div className="p-3 bg-white m-2.5 rounded-lg flex justify-between hover:bg-gray-200" onClick={()=>{
+        <div className="p-2 pl-3 pr-3 m-2 bg-white rounded-lg flex justify-between items-center hover:bg-gray-200" onClick={()=>{
             navigate(`/chat/${id}`)
             setIsEnabled((prev)=>!prev)
             }}>
             <p>{title}</p>
-            <button className="hover:bg-gray-100 p-1 h-8 w-8 rounded-full" onClick={(e)=>{
+            <button className="hover:bg-gray-100 p-1.5 h-8 w-8 rounded-full" onClick={(e)=>{
                 e.stopPropagation()
                 api.delete(`/api/chat/deletechat?id=${id}`)
                 .then((res)=>toast.success(res.data.message))

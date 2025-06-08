@@ -130,7 +130,7 @@ exports.getChats=async(req,res)=>{
     })
 
     try{
-        const chats=await chat.find({userId:userId}).select("_id title")
+        const chats=await chat.find({userId:userId}).sort({updatedAt:-1}).select("_id title")
 
         res.status(200).json({
             status:"success",

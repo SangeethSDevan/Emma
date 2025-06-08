@@ -14,7 +14,7 @@ const History=({
     const state=useContext(stateContext)
 
     return (
-        <div className={`p-3 flex flex-col justify-between gap-1.5 ${state.isEnabled? `sm:w-1/5 w-full`: `hidden`}`}>
+        <div className={`p-3 flex flex-col justify-between gap-1.5 ${state.isEnabled? `sm:w-1/5 md:w-2/8 w-full`: `hidden`}`}>
             <p className="font-outfit font-bold">Chat History</p>
             <button className="bg-gray-100 p-2 rounded-2xl hover:bg-gray-200" onClick={()=>{
                 navigate("/",{replace:true})
@@ -40,7 +40,7 @@ const History=({
                         />
                     ))
                 ) : (
-                    <p className="font-bold p-5 text-xl">No recent chats</p>
+                    <p className="font-bold p-5 text-md">No recent chats</p>
                 )}
             </div>
             <ProfileCard/>

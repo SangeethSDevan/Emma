@@ -18,9 +18,7 @@ const ChatSection = ({
 
 
  const onHandleBlur = () => {
-    console.log("function called!");
-    if (title !== state.chatTitle && !!state.chatId && !!state.chatTitle) {
-        console.log("req sent");
+    if (title.trim() !== state.chatTitle.trim() && !!state.chatId && !!state.chatTitle) {
         api.put(`/api/chat/renamechat/${state.chatTitle}?id=${state.chatId}`)
             .then((res) =>{
                 toast.success(res.data.message)
@@ -39,7 +37,7 @@ const ChatSection = ({
     >
       <input
         type="text"
-        className="w-full text-center outline-none focus:bg-gray-200 bg-gray-50 rounded-sm"
+        className="w-full text-center outline-none focus:bg-gray-100 bg-gray-50 rounded-sm"
         value={state.chatTitle}
         onChange={(e) => setChatTitle(e.target.value)}
         maxLength={40}

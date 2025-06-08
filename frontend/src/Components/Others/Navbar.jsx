@@ -24,7 +24,7 @@ const Navbar=({
                 <p className="font-rightous text-lg">Emma</p>
             </div>
             {userOBJ?.name && type!='login'?
-            <p  className="invisible sm:visible">Hi <span className="font-bold">{userOBJ.name}</span>!</p>:
+            <p  className="invisible sm:visible pr-11">Hi <span className="font-bold">{userOBJ.name}</span>!</p>:
             null}
             {type==='chatScreen'?
             <div className="p-2 rounded-full hover:bg-gray-200" onClick={()=>navigate("/editProfile",{replace:true})}>

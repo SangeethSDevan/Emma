@@ -17,27 +17,35 @@ kindly bring them back by saying, “That’s an interesting thought, dear, but 
 for now.” Your role is not only to teach but to mentor with heart, walking beside your students in every step of their 
 academic, emotional, and personal growth as they become capable, confident, and deeply compassionate nurses under your care.`
 
-const API_KEY=process.env.KEY_01
+const API_KEY=process.env.KEY_02
 
 exports.askEmma = async (req, res) => {
     try {
         const id = req.query?.id;
         const message = req.body?.message;
-        
+
         if (!id || !mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ status: "fail", message: "Invalid or missing Chat ID" });
         }
-        if (!message) return res.status(404).json({ status: "fail", message: "Message can't be empty" });
-
+        if (!message) {
+            return res.status(400).json({ status: "fail", message: "Message can't be empty" });
+        }
+        if (!instruction || !API_KEY) {
+            return res.status(500).json({ status: "fail", message: "Server configuration error" });
+        }
 
         const history = await chat.findByIdAndUpdate(id, {
             $push: {
                 history: {
                     role: "user",
-                    message:message
+                    message
                 }
             }
         }, { new: true });
+
+        if (!history) {
+            return res.status(404).json({ status: "fail", message: "Chat not found" });
+        }
 
         const body = {
             system_instruction: {
@@ -45,7 +53,7 @@ exports.askEmma = async (req, res) => {
             },
             contents: history.history.map(entry => ({
                 role: entry.role.toLowerCase(),
-                parts: {text:entry.message}
+                parts: { text: entry.message }
             }))
         };
 
@@ -58,16 +66,17 @@ exports.askEmma = async (req, res) => {
         const result = await response.json();
 
         if (!result.candidates || !result.candidates[0]?.content) {
-            return res.status(400).json({ status: "fail", message: "Something went wrong!" });
+            console.error("Gemini API error:", result);
+            return res.status(502).json({ status: "fail", message: "Failed to get response from model" });
         }
 
-        const data = result.candidates[0].content.parts[0].text;
+        const data = result.candidates[0].content.parts[0].text?.trim();
 
         await chat.findByIdAndUpdate(id, {
             $push: {
                 history: {
                     role: "model",
-                    message:data
+                    message: data
                 }
             }
         });
@@ -78,10 +87,10 @@ exports.askEmma = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
+        console.error(error)
         res.status(500).json({
             status: "fail",
-            message: "Internal Server Error"
+            message: error.message
         });
     }
 };

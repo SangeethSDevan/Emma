@@ -92,8 +92,9 @@ const SignupPage=()=>{
                     value={state.uname}
                     onBlur={(e) => {
                         const name = e.target.value.trim();
+                        const regex=/^([A-Z][a-z]{1,19}|[A-Z])(?: ([A-Z][a-z]{1,19}|[A-Z]))*$/
 
-                        if (name.length==0 || name.length > 15) {
+                        if (!name.match(regex)) {
                             setError((prev) => ({
                                 ...prev,
                                 name: "Enter a valid name"

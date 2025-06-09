@@ -34,7 +34,7 @@ exports.fetchChat=async(req,res)=>{
 }
 
 exports.createChat=async(req,res)=>{
-    const id=req.body?.user?.uid
+    const id=req.user?.uid
     const title=req.body?.title
     if(!id) return res.status(403).json({
         status:"fail",
@@ -64,7 +64,7 @@ exports.createChat=async(req,res)=>{
 
 exports.deleteChat=async(req,res)=>{
     const id=req.query?.id
-    const userID=req.body?.user?.uid
+    const userID=req.user?.uid
 
     if(!id) return res.status(404).json({
         status:"fail",
@@ -123,7 +123,7 @@ exports.renameChat=async(req,res)=>{
     }
 }
 exports.getChats=async(req,res)=>{
-    const userId=req.body?.user?.uid
+    const userId=req.user?.uid
     if(!userId) return res.status(404).json({
         status:"fail",
         message:"You must be a valid user to access chats"

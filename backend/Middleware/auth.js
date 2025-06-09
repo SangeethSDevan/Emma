@@ -11,11 +11,8 @@ exports.validateUser=async(req,res,next)=>{
    }
 
    try{
-        req.body={
-          ...req.body,
-          user:jwt.verify(token,process.env.JWT_SECRET)
-        }
-        const id=req.body.user?.uid
+        req.user=jwt.verify(token,process.env.JWT_SECRET)
+        const id=req.user?.uid
         const user=await users.findOne({_id:id})
         
         if(!user) throw Error("User doesn't exist!")

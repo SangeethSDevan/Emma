@@ -66,6 +66,7 @@ exports.loginController= async (req,res)=>{
 }
 exports.signupContoller=async(req,res)=>{
     const {username,name,email,password}=req.body
+
     //Validate user details
     if(!username || !name || !email || !password){
         return res.status(403).json({
@@ -74,10 +75,16 @@ exports.signupContoller=async(req,res)=>{
         })
     }
 
-    if(name.length>20){
+    if(!name.match(/^[A-Z][a-z]{1,19}( [A-Z][a-z]{1,19})*$/)){
         return res.status(403).json({
             status:"fail",
-            message:"Name can't exceed 20 characters"
+            message:"Name is invalid. Enter a valid name"
+        })
+    }
+    if(!username.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)){
+        return res.status(403).json({
+            status:"fail",
+            message:"The email is invalid"
         })
     }
     if(password.length<8 || password.length>16) return res.status(403).json({
@@ -143,7 +150,8 @@ exports.signupContoller=async(req,res)=>{
     }
 }
 exports.editProfile = async (req, res) => {
-    const { user, update } = req.body;
+    const {update } = req.body;
+    const user=req.user;
 
     const uid = user?.uid;
 
@@ -185,10 +193,17 @@ exports.editProfile = async (req, res) => {
 
 exports.isUsernameTaken=async(req,res)=>{
     const username=req.query?.username
+    const regex=/^[a-zA-Z][a-zA-Z0-9_]{2,19}$/;
 
     if(!username) return res.status(400).json({
         status:"fail",
         message:"username is required"
+    })
+
+    if(!username.match(regex)) return res.status(200).json({
+        status:"fail",
+        message:`${username} is not available`,
+        isTaken:true
     })
 
     try{

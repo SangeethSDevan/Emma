@@ -2,6 +2,7 @@ const express=require('express')
 const userRouter=require("./Routes/userRouter");
 const chatRouter=require("./Routes/chatRouter");
 const askRouter=require("./Routes/askRouter")
+const pinRouter=require("./Routes/pinnedRouter")
 const cookieParser=require("cookie-parser")
 const cors=require('cors')
 const { validateUser, checkAuthenticity } = require('./Middleware/auth');
@@ -20,6 +21,7 @@ app.use(express.json())
 app.use("/api/users",userRouter)
 app.use("/api/chat",validateUser,chatRouter)
 app.use("/api/ask",validateUser,askRouter)
+app.use("/api/pins/",validateUser,pinRouter)
 
 app.use("/api/isalive",(req,res)=>{
     res.status(200).json({

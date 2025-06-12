@@ -9,6 +9,7 @@ import ChatPage from './Pages/ChatPage.jsx'
 import Protected from './Components/Authorisation/Protected.jsx'
 import EditPage from './Pages/EditPage.jsx'
 import {ToastContainer} from "react-toastify"
+import PinPage from './Pages/PinPage.jsx'
 
 
 const router=createBrowserRouter([
@@ -42,6 +43,12 @@ const router=createBrowserRouter([
     path:"/editProfile",
     element:<Protected>
       <EditPage/>
+    </Protected>
+  },
+  {
+    path:"/pins",
+    element:<Protected>
+      <PinPage/>
     </Protected>
   },
   {

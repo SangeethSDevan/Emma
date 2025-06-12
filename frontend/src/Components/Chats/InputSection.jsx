@@ -27,7 +27,7 @@ const InputSection = ({
                 const askRes = await api.post(`/api/ask/?id=${id}`, { message: input });
                 setChat("model", askRes.data.response);
             } catch (err) {
-                toast.error(err.response.data.message || "Something went wrong")
+                toast.error(err.response?.data?.message || "Something went wrong")
             }
         } else {
             setChat("user", input);
@@ -37,13 +37,13 @@ const InputSection = ({
                 .then((res) => res.data.response)
                 .then((data) => {
                     setChat("model", data);
-                }).catch((err)=>toast.error(err.response.data.message || "Something went wrong"))
+                }).catch((err)=>toast.error(err.response?.data?.message || "Something went wrong"))
                 .finally(()=>setLoading(false))
         }
     };
 
     return (
-        <form className="flex flex-row justify-center gap-2" onSubmit={handleSend}>
+        <form className="flex flex-row justify-center gap-2 mt-2" onSubmit={handleSend}>
             <input
                 type="text"
                 placeholder="Is Everything ok?"

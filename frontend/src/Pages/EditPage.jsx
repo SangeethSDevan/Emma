@@ -54,7 +54,7 @@ const EditPage=()=>{
         api.get(`/api/users/isusertaken?username=${state.username}`)
             .then((res) => setUserTaken(res.data.isTaken))
             .catch((err) => {
-                toast.error(err.response.data.message ||"Error checking username");
+                toast.error(err.response?.data?.message ||"Error checking username");
                 setUserTaken(true);
             });
     };
@@ -63,7 +63,7 @@ const EditPage=()=>{
         return !!(!state.username || isUserTaken || !state.name)
     }
     return(
-        <div  className="h-screen flex flex-col flex-grow font-outfit items-center">
+        <div  className="h-[100dvh] flex flex-col flex-grow font-outfit items-center">
             <Navbar type={'edit'}/>
             <form className="flex flex-col justify-center h-full items-center">
                 <p className="text-xl p-2 font-bold text-gray-500">Hello, You can edit your profile here</p>

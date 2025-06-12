@@ -38,7 +38,7 @@ const ChatPage = () => {
                 history:res
             }))})
             .catch(error=>{
-                toast.error(error.response.data.message || "Unable to fetch chats")
+                toast.error(error.response?.data?.message || "Unable to fetch chats")
                 setHistoryStatus(false)
             })
     }
@@ -106,7 +106,7 @@ const ChatPage = () => {
                     chats:data?.history,
                     chatTitle:data?.title
                 })))
-                .catch((error)=>toast.error(error.response.data.message || "Something went wrong"))
+                .catch((error)=>toast.error(error.response?.data?.message || "Something went wrong"))
         }
     }, [state.chatId])
 

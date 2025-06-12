@@ -23,7 +23,7 @@ const ChatScreen=({isLoading})=>{
                 <p className="text-2xl sm:text-3xl font-bold pb-3">Your personal <span className="text-blue-700 font-bold">Nursing mentor</span> :)</p>
             </>:
             <>
-                {state.chats.map((chat,id)=><Message role={chat.role} message={chat.message} key={id}/>)}
+                {state.chats.map((chat,id)=><Message chat={chat} key={id}/>)}
                 {isLoading?
                         <div className="flex w-10 h-10 ml-3">
                                 <img src="/chatLoader.svg" alt="Loading..." />

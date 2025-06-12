@@ -22,7 +22,7 @@ const HistoryCard=({
                 .then(()=>{
                     setHistory()
                 })
-                .catch(error=>toast.error(err.response.data.message || "Something went wrong"))
+                .catch(error=>toast.error(error.response?.data?.message || "Something went wrong"))
             }}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="red" className="size-5" >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />

@@ -13,7 +13,7 @@ const Protected=({children})=>{
             api.get("/api/validate")
                 .then(()=>setAuthorized(true))
                 .catch((error)=>{
-                    toast.error(error.response.data.message)
+                    toast.error(error.response?.data?.message || "Something went wrong!")
                     setAuthorized(false)
                     navigate("/auth/signup")
                 })

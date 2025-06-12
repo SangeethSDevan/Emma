@@ -26,7 +26,7 @@ export const logout=()=>{
             localStorage.removeItem("user")
             localStorage.removeItem("history")
         })
-        .catch((error)=>toast.error(error.response.message || "Something went wrong!"))
+        .catch((error)=>toast.error(error.response?.message || "Something went wrong!"))
 
 }
 

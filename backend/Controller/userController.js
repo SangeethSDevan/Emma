@@ -75,7 +75,7 @@ exports.signupContoller=async(req,res)=>{
         })
     }
 
-    if(!name.match(/^[A-Z][a-z]{1,19}( [A-Z][a-z]{1,19})*$/)){
+    if(!name.trim().match(/^[A-Z][a-z]{1,19}( [A-Z][a-z]{1,19})*$/)){
         return res.status(403).json({
             status:"fail",
             message:"Name is invalid. Enter a valid name"
@@ -109,7 +109,7 @@ exports.signupContoller=async(req,res)=>{
     try{
         const user=await users.create({
             username:username,
-            name: name,
+            name: name.trim(),
             email:email,
             password:hash
         })

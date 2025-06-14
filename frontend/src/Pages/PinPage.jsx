@@ -30,8 +30,9 @@ const PinPage = () => {
                             <p>No pins exist.</p>
                             <p className="bg-gray-200 pl-4 pr-4 rounded-md">Double tap on reponses to pin it</p>
                         </div>:
-                        <div className="w-20 flex justify-center items-center p-2">
+                        <div className="w-full h-full justify-center items-center p-2 flex flex-col">
                             <img src="/historyLoader.svg" alt="Loading" />
+                            <p className="font-outfit font-bold text-center text-blue-950">Please wait while fetching your pinned messages</p>
                         </div>
                     )
                 }

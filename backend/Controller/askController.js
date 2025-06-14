@@ -72,25 +72,25 @@ exports.askEmma = async (req, res) => {
 
         const data = result.candidates[0].content.parts[0].text?.trim();
 
-        await chat.findByIdAndUpdate(id, {
+        const umd=await chat.findByIdAndUpdate(id, {
             $push: {
                 history: {
                     role: "model",
                     message: data
                 }
             }
-        });
+        },{ new:true });
 
         res.status(200).json({
             status: "success",
-            response: data
+            response: umd.history[umd.history.length-1]
         });
 
     } catch (error) {
         console.error(error)
         res.status(500).json({
             status: "fail",
-            message: error.message
+            message: error.message,
         });
     }
 };

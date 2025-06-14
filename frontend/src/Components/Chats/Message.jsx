@@ -14,13 +14,25 @@ const Message=({
     const navigate=useNavigate()
 
     const onDoubleClick=()=>{
-        api.post("/api/pins/pin",{
-            chatId:state.chatId,
-            msgId:chat._id
-        })
-        .then((res)=>res.data)
-        .then((data)=>toast.success(data?.message))
-        .catch((error)=>toast.error(error.response?.data?.message))
+        toast.promise(
+            api.post("/api/pins/pin",{
+                chatId:state.chatId,
+                msgId:chat._id
+            }),
+            {
+                pending:"Your message is pinning",
+                success:{
+                    render({data}){
+                        return data?.data?.message
+                    }
+                },
+                error:{
+                    render({error}){
+                        return error?.response?.data?.message
+                    }
+                }
+            }
+        )
     }
 
     const onUnpin=()=>{

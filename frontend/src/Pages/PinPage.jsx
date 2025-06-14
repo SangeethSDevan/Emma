@@ -5,10 +5,12 @@ import Navbar from "../Components/Others/Navbar"
 
 const PinPage = () => {
     const [pins, setPins] = useState([]);
+    const [loading,setIsLoading]=useState(true)
     const getPins=()=>{
         api.get("/api/pins/getpins")
             .then((res) => res.data?.data)
-            .then((pins) => setPins(pins || []));
+            .then((pins) => setPins(pins || []))
+            .then(()=>setIsLoading(false))
     }
 
     useEffect(() => {
@@ -22,11 +24,16 @@ const PinPage = () => {
                 {pins.length>0?
                     pins.map((pin, index) => (
                     <Message key={index} type={"pin"} chat={pin} getPins={getPins}/>
-                    )):
-                    <div className="flex flex-col justify-center items-center h-[80dvh]">
-                        <p>No pins exist.</p>
-                        <p className="bg-gray-200 pl-4 pr-4 rounded-md">Double tap on reponses to pin it</p>
-                    </div>
+                    )):(
+                        !loading?
+                        <div className="flex flex-col justify-center items-center h-[80dvh]">
+                            <p>No pins exist.</p>
+                            <p className="bg-gray-200 pl-4 pr-4 rounded-md">Double tap on reponses to pin it</p>
+                        </div>:
+                        <div className="w-20 flex justify-center items-center p-2">
+                            <img src="/historyLoader.svg" alt="Loading" />
+                        </div>
+                    )
                 }
             </div>
         </div>

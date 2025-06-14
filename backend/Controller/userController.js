@@ -81,7 +81,7 @@ exports.signupContoller=async(req,res)=>{
             message:"Name is invalid. Enter a valid name"
         })
     }
-    if(!username.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)){
+    if(!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)){
         return res.status(403).json({
             status:"fail",
             message:"The email is invalid"

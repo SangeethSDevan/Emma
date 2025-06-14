@@ -55,10 +55,13 @@ const ChatPage = () => {
             ...prev,
             chats:[
                 ...prev.chats,
+                (role=="user"?
                 {
                     role:role,
-                    message:data
-                }
+                    message:data,
+                }:
+                data
+                )
             ]
         }))
     }
@@ -101,11 +104,13 @@ const ChatPage = () => {
         if (state.chatId) {
             api.post("/api/chat/fetch", { id: state.chatId })
                 .then((res) =>res.data.data)
-                .then((data)=>setState((prev)=>({
+                .then((data)=>{
+                    setState((prev)=>({
                     ...prev,
                     chats:data?.history,
                     chatTitle:data?.title
-                })))
+                }))
+            })
                 .catch((error)=>toast.error(error.response?.data?.message || "Something went wrong"))
         }
     }, [state.chatId])

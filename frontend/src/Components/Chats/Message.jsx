@@ -27,8 +27,9 @@ const Message=({
                     }
                 },
                 error:{
-                    render({error}){
-                        return error?.response?.data?.message
+                    render({data}){
+                        const message=data?.response?.data?.message || "Something went wrong"
+                        return message
                     }
                 }
             }

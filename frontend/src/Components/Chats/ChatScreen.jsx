@@ -20,7 +20,7 @@ const ChatScreen=({isLoading})=>{
             <>
                 <p className="text-2xl sm:text-4xl font-bold text-gray-600">Good {now.getHours()<12?"Morning":"Evening"} <span className="text-black">{user.name},</span></p>
                 <p className="text-3xl sm:text-6xl font-bold text-gray-400">It's me <span className="font-rightous text-black">Emma!</span></p>
-                <p className="text-2xl sm:text-3xl font-bold pb-3">Your personal <span className="text-blue-700 font-bold">Nursing mentor</span> :)</p>
+                <p className="text-2xl sm:text-3xl font-bold pb-3">Your new <span className="text-blue-700 font-bold">Nurse friend</span> :)</p>
             </>:
             <>
                 {state.chats.map((chat,id)=><Message chat={chat} key={id}/>)}
